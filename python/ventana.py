@@ -41,15 +41,15 @@ def ejecutarSelectU2():
 def ejecutarSelectU3():
     rsUsuario = controlador.buscarBebida(varAct.get())
     varNom1.set('')
-    varCor1.set('')
-    varContra1.set('')
+    clasificacion2.set('')
+    marca2.set('')
     varPrecio1.set('')
     
     if (rsUsuario):
         for usu in rsUsuario:
             varNom1.set(usu[1])
-            varCor1.set(usu[2])
-            varContra1.set(usu[3])
+            clasificacion2.set(usu[2])
+            marca2.set(usu[3])
             varPrecio1.set(usu[4])
     else:
         messagebox.showinfo('No encontrado', 'Usuario no existe en BD')
@@ -63,10 +63,10 @@ def ejecutarConsul():
 def ejecutarModi():
     ask = messagebox.askyesno('Confirmación','¿Seguro que quiere actualizar esta información?')
     if ask == True:
-        controlador.actualizarBebida(varAct.get(), varNom1.get(), varCor1.get(), varContra1.get(), varPrecio1.get())
+        controlador.actualizarBebida(varAct.get(), varNom1.get(), clasificacion2.get(), marca2.get(), varPrecio1.get())
         varNom1.set('')
-        varCor1.set('')
-        varContra1.set('')
+        clasificacion2.set('')
+        marca2.set('')
         varPrecio1.set('')
     else:
         messagebox.showerror('Error', 'Usuario no Actualizado')
@@ -247,13 +247,21 @@ varNom1= tk.StringVar()
 lblNom1= Label(pestana5, text='Nombre: ').pack()
 txtNom1= Entry(pestana5, textvariable=varNom1).pack()
 
-varCor1= tk.StringVar()
-lblCor1= Label(pestana5, text='Clasificacion: ').pack()
-txtCor1= Entry(pestana5, textvariable=varCor1).pack()
+lblClasificacion2= Label(pestana5, text='Clasificacion: ').pack()
+clasificacion2 = ttk.Combobox(
+    pestana5,
+    state="readonly",
+    values=["Energizantes", "Agua", "Azucaradas", "Relajantes"]
+)
+clasificacion2.pack()
 
-varContra1= tk.StringVar()
-lblContra1= Label(pestana5, text='Marca: ').pack()
-txtContra1= Entry(pestana5, textvariable=varContra1).pack()
+lblmarca2= Label(pestana5, text='Marca: ').pack()
+marca2 = ttk.Combobox(
+    pestana5,
+    state="readonly",
+    values=["Pepsi", "Coca-Cola", "Nescafe", "Lipton"]
+)
+marca2.pack()
 
 varPrecio1= tk.StringVar()
 lblPrecio1= Label(pestana5, text='Precio: ').pack()
