@@ -7,10 +7,10 @@ from controladorBD import *
 controlador = controladorBD()
 #Metodo que usa mi objeto controlador para insertar
 def ejectutaInsert():
-    controlador.altaBD(varNom.get(), varCor.get(), varContra.get(), varPrecio.get())
+    controlador.altaBD(varNom.get(), clasificacion.get(), marca.get(), varPrecio.get())
     varNom.set('')
-    varCor.set('')
-    varContra.set('')
+    clasificacion.set('')
+    marca.set('')
     varPrecio.set('')
 #Funcion que usa mi objeto controlador para buscar 1 usuario
 
@@ -20,14 +20,14 @@ def ejecutarSelectU():
 
     #Iteramos el contenido de la consulta y lo guardamos en CADENA 
     for usu in rsUsu:
-        cadena = str(usu[0])+' '+usu[1]+ ' '+usu[2] + ' '+ str(usu[3])
+        cadena = str(usu[0])+' '+usu[1]+ ' '+usu[2] + ' '+ usu[3]+ ' '+str(usu[4])
     if (rsUsu):
         textBus.insert(INSERT, cadena)
     else:
         messagebox.showinfo('No encontrado', 'Usuario no existe en BD')
 
 def ejecutarSelectU2():
-    rsUsuario = controlador.buscarUsuario(varElim.get())
+    rsUsuario = controlador.buscarBebida(varElim.get())
     tree2.delete(*tree2.get_children())
 
     #Iteramos el contenido de la consulta y lo guardamos en CADENA 
@@ -39,21 +39,23 @@ def ejecutarSelectU2():
         messagebox.showinfo('No encontrado', 'Usuario no existe en BD')
 
 def ejecutarSelectU3():
-    rsUsuario = controlador.buscarUsuario(varAct.get())
+    rsUsuario = controlador.buscarBebida(varAct.get())
     varNom1.set('')
     varCor1.set('')
     varContra1.set('')
+    varPrecio1.set('')
     
     if (rsUsuario):
         for usu in rsUsuario:
             varNom1.set(usu[1])
             varCor1.set(usu[2])
             varContra1.set(usu[3])
+            varPrecio1.set(usu[4])
     else:
         messagebox.showinfo('No encontrado', 'Usuario no existe en BD')
 
 def ejecutarConsul():
-    rsConsul = controlador.consultarUsuario()
+    rsConsul = controlador.consultarBebida()
     tree.delete(*tree.get_children())
     for fila in rsConsul:
         tree.insert('',tk.END, values=fila)
@@ -61,7 +63,7 @@ def ejecutarConsul():
 def ejecutarModi():
     ask = messagebox.askyesno('Confirmación','¿Seguro que quiere actualizar esta información?')
     if ask == True:
-        controlador.actualizarUsuario(varAct.get(), varNom1.get(), varCor1.get(), varContra1.get(), varPrecio1.get())
+        controlador.actualizarBebida(varAct.get(), varNom1.get(), varCor1.get(), varContra1.get(), varPrecio1.get())
         varNom1.set('')
         varCor1.set('')
         varContra1.set('')
@@ -73,11 +75,24 @@ def ejecutarModi():
 def ejecutarEliminarU():
     ask = messagebox.askyesno('Pregunta', '¿Seguro que quiere eliminar el usuario?')
     if ask == True:
-        controlador.eliminarUsuario(varElim.get())
+        controlador.eliminarBebida(varElim.get())
         tree2.delete(*tree2.get_children())
         messagebox.showinfo('Info', 'Usuario Eliminado')
     else:
         messagebox.showerror('Error', 'Usuario no Eliminado')
+        
+def promedioBebidas():
+    rsProm = controlador.promedio()
+    varProm.set(rsProm)
+
+def promedioBebidasMarca():
+    rsProm1 = controlador.promedioMarca(marca1.get())
+    varProm1.set(rsProm1)
+    
+def promedioBebidasClasi():
+    rsProm2 = controlador.promedioClasi(clasificacion1.get())
+    varProm2.set(rsProm2)
+    
 
 ventana = Tk()
 ventana.title('CRUD de bebidas')
@@ -99,13 +114,21 @@ varNom= tk.StringVar()
 lblNom= Label(pestana1, text='Nombre: ').pack()
 txtNom= Entry(pestana1, textvariable=varNom).pack()
 
-varCor= tk.StringVar()
-lblCor= Label(pestana1, text='Clasificacion: ').pack()
-txtCor= Entry(pestana1, textvariable=varCor).pack()
+lblClasificacion= Label(pestana1, text='Clasificacion: ').pack()
+clasificacion = ttk.Combobox(
+    pestana1,
+    state="readonly",
+    values=["Energizantes", "Agua", "Azucaradas", "Relajantes"]
+)
+clasificacion.pack()
 
-varContra= tk.StringVar()
-lblContra= Label(pestana1, text='Marca: ').pack()
-txtContra= Entry(pestana1, textvariable=varContra).pack()
+lblmarca= Label(pestana1, text='Marca: ').pack()
+marca = ttk.Combobox(
+    pestana1,
+    state="readonly",
+    values=["Pepsi", "Coca-Cola", "Nescafe", "Lipton"]
+)
+marca.pack()
 
 varPrecio= tk.StringVar()
 lblPrecio= Label(pestana1, text='Precio: ').pack()
@@ -120,7 +143,7 @@ titulo2= Label(pestana2, text='Buscar Bebida', fg='green', font=('Modern', 18)).
 varBus= tk.StringVar()
 lblid=Label(pestana2,text='Identificador de bebida:').pack()
 txtid= Entry(pestana2,textvariable=varBus).pack()
-btnBusqueda= Button(pestana2,text='Buscar').pack()
+btnBusqueda= Button(pestana2,text='Buscar', command=ejecutarSelectU).pack()
 
 subBus= Label(pestana2, text='Resgistrado:', fg='blue',font=('Modern', 15)).pack()
 textBus= tk.Text(pestana2, width=52, height=5)
@@ -146,7 +169,41 @@ tree.column("#5", anchor=tk.CENTER)
 tree.heading("#5", text="Precio")
 
 tree.pack()
-btnConsul= Button(pestana3,text='Consultar').pack()
+btnConsul= Button(pestana3,text='Consultar', command=ejecutarConsul).pack()
+
+varProm=tk.StringVar()
+lblProm= Label(pestana3, text='Promedio de bebidas: ').pack()
+txtProm= Entry(pestana3, textvariable=varProm).pack()
+btnProm= Button(pestana3,text='Consultar', command=promedioBebidas).pack()
+
+lblProm1= Label(pestana3, text='Promedio de bebidas por marca: ').pack()
+lblmarca1= Label(pestana3, text='Marca: ').pack()
+marca1 = ttk.Combobox(
+    pestana3,
+    state="readonly",
+    values=["Pepsi", "Coca-Cola", "Nescafe", "Lipton"]
+)
+marca1.pack()
+
+
+varProm1=tk.StringVar()
+
+txtProm1= Entry(pestana3, textvariable=varProm1).pack()
+btnProm1= Button(pestana3,text='Consultar', command=promedioBebidasMarca).pack()
+
+lblProm2= Label(pestana3, text='Promedio de bebidas por clasificacion: ').pack()
+lblClasificacion1= Label(pestana3, text='Clasificacion: ').pack()
+clasificacion1 = ttk.Combobox(
+    pestana3,
+    state="readonly",
+    values=["Energizantes", "Agua", "Azucaradas", "Relajantes"]
+)
+clasificacion1.pack()
+
+varProm2=tk.StringVar()
+
+txtProm2= Entry(pestana3, textvariable=varProm2).pack()
+btnProm2= Button(pestana3,text='Consultar', command=promedioBebidasClasi).pack()
 
 #Pestaña 4
 titulo4 = Label(pestana4, text='Eliminar Bebidas', fg = 'black', font=('Modern', 18)).pack()
@@ -154,8 +211,8 @@ titulo4 = Label(pestana4, text='Eliminar Bebidas', fg = 'black', font=('Modern',
 varElim= tk.StringVar()
 lblP4=Label(pestana4,text='Identificador de Usuario:').pack()
 txtP4= Entry(pestana4,textvariable=varElim).pack()
-btnBusqueda= Button(pestana4,text='Buscar').pack()
-btnElim= Button(pestana4,text='Eliminar').pack()
+btnBusqueda= Button(pestana4,text='Buscar', command=ejecutarSelectU2).pack()
+btnElim= Button(pestana4,text='Eliminar', command=ejecutarEliminarU).pack()
 
 tree2 = ttk.Treeview(pestana4, column=("c1", "c2", "c3", 'c4','c5'), show='headings')
 
@@ -182,7 +239,7 @@ titulo5 = Label(pestana5, text='Actualizar Bebidas', fg = 'black', font=('Modern
 varAct= tk.StringVar()
 lblP4=Label(pestana5,text='Identificador de Bebida:').pack()
 txtP4= Entry(pestana5,textvariable=varAct).pack()
-btnBusqueda= Button(pestana5,text='Buscar').pack()
+btnBusqueda= Button(pestana5,text='Buscar', command=ejecutarSelectU3).pack()
 
 
 
@@ -202,7 +259,7 @@ varPrecio1= tk.StringVar()
 lblPrecio1= Label(pestana5, text='Precio: ').pack()
 txtPrecio1= Entry(pestana5, textvariable=varPrecio1).pack()
 
-btnAct= Button(pestana5,text='Actualizar').pack()
+btnAct= Button(pestana5,text='Actualizar', command=ejecutarModi).pack()
 
 
 panel.add(pestana1, text='Agregar bebida')
