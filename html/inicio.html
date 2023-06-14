@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Página de Doctor</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+    }
+
+    .container {
+      display: flex;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .sidebar {
+      flex: 0 0 200px;
+      background-color: #f1f1f1;
+      padding: 20px;
+    }
+
+    .content {
+      flex: 1;
+      padding: 20px;
+    }
+
+    .button-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+
+    .button:hover {
+      background-color: #45a049;
+    }
+
+    h2, p {
+      margin: 0;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="sidebar">
+      <!-- Datos del doctor -->
+      <h2>Datos del Doctor</h2>
+      <p><strong>Nombre:</strong> Doctor Ejemplo</p>
+      <p><strong>Especialidad:</strong> Especialidad Ejemplo</p>
+      <p><strong>Correo electrónico:</strong> doctor@example.com</p>
+    </div>
+
+    <div class="content">
+      <div class="button-container">
+        <!-- Botones -->
+        <button class="button">Botón 1</button>
+        <button class="button">Botón 2</button>
+        <button class="button">Botón 3</button>
+        <button class="button">Botón 4</button>
+        <button class="button">Botón 5</button>
+      </div>
+
+      <!-- Contenido adicional de la página -->
+      <h1>Bienvenido, Doctor Ejemplo</h1>
+      <p>Aquí puedes agregar más contenido según tus necesidades.</p>
+    </div>
+  </div>
+</body>
+</html>

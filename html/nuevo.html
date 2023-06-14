@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CRUD de Doctores y Pacientes</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    h2 {
+      margin-top: 30px;
+    }
+
+    form {
+      margin-bottom: 20px;
+    }
+
+    input[type="text"] {
+      padding: 5px;
+      width: 200px;
+    }
+
+    input[type="submit"] {
+      padding: 5px 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #4CAF50;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <h1>CRUD de Doctores y Pacientes</h1>
+
+  <!-- Formulario para agregar doctores -->
+  <h2>Agregar Doctor</h2>
+  <form action="agregar_doctor.php" method="POST">
+    <input type="text" name="nombre" placeholder="Nombre">
+    <input type="submit" value="Agregar Doctor">
+  </form>
+
+  <!-- Formulario para agregar pacientes -->
+  <h2>Agregar Paciente</h2>
+  <form action="agregar_paciente.php" method="POST">
+    <input type="text" name="nombre" placeholder="Nombre">
+    <input type="submit" value="Agregar Paciente">
+  </form>
+
+  <!-- Tabla para mostrar los doctores -->
+  <h2>Doctores</h2>
+  <table>
+    <tr>
+      <th>ID</th>
+      <th>Nombre</th>
+      <th>Acciones</th>
+    </tr>
+    <!-- Aquí se mostrarán los registros de doctores -->
+    <?php
+      // Obtener los doctores de la base de datos y mostrarlos en filas de la tabla
+      // Puedes utilizar un bucle para recorrer los registros y generar las filas
+    ?>
+  </table>
+
+  <!-- Tabla para mostrar los pacientes -->
+  <h2>Pacientes</h2>
+  <table>
+    <tr>
+      <th>ID</th>
+      <th>Nombre</th>
+      <th>Acciones</th>
+    </tr>
+    <!-- Aquí se mostrarán los registros de pacientes -->
+    <?php
+      // Obtener los pacientes de la base de datos y mostrarlos en filas de la tabla
+      // Puedes utilizar un bucle para recorrer los registros y generar las filas
+    ?>
+  </table>
+</body>
+</html>
