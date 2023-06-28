@@ -16,7 +16,11 @@ mysql=MySQL(app)
 #Declaracion de la ruta http://localhost:5000
 @app.route('/')
 def index():
-    return render_template('index.html')
+    consulta= mysql.connect.cursor()
+    consulta.execute('select * from tbAlbums')
+    conAlbums= consulta.fetchall()
+    #print(conAlbums)
+    return render_template('index.html', albums = conAlbums)
 
 #Ruta http://localhost:5000/guardar tipo POST para insert
 @app.route('/guardar', methods=['POST'])
