@@ -31,7 +31,7 @@ def guardar():
         vtitulo= request.form['txtTitulo']
         vartista= request.form['txtArtista']
         vanio= request.form['txtAnio']
-        #print(titulo,artista,anio)
+        #print(titulo,artista,anio) 
         
         #Conectar y ejecutar el insert
         cs = mysql.connection.cursor()
@@ -40,6 +40,20 @@ def guardar():
         
     flash('El album fue agregado correctamente')
     return redirect(url_for('index'))
+
+@app.route('/editar/<id>')
+def editar(id):
+    cursorId=mysql.connection.cursor()
+    cursorId.execute('select * from tbAlbums where id=%s',(id,))
+    consId = cursorId.fetchone()
+    return render_template('editaralbum.html', id=consId)
+
+@app.route('/actualizar/<id>',methods=['POST'])
+def actualizar(id):
+    cursorId=mysql.connection.cursor()
+    cursorId.execute('select * from tbAlbums where id=%s',(id))
+    consId = cursorId.fetchone()
+    return render_template('editaralbum.html', id=consId)
 
 @app.route('/eliminar', methods=['POST'])
 def eliminar():
