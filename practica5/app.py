@@ -46,18 +46,38 @@ def editar(id):
     cursorId=mysql.connection.cursor()
     cursorId.execute('select * from tbAlbums where id=%s',(id,))
     consId = cursorId.fetchone()
-    return render_template('editaralbum.html', id=consId)
+    return render_template('editaralbum.html', album=consId)
 
 @app.route('/actualizar/<id>',methods=['POST'])
 def actualizar(id):
-    cursorId=mysql.connection.cursor()
-    cursorId.execute('select * from tbAlbums where id=%s',(id))
-    consId = cursorId.fetchone()
-    return render_template('editaralbum.html', id=consId)
+    if request.method == 'POST':
+        varTitulo = request.form['txtTitulo']
+        varArtista = request.form['txtArtista']
+        varAnyo = request.form['txtAnio']
+        
+        curAct = mysql.connection.cursor()
+        curAct.execute('update tbAlbums set titulo= %s, artista=%s, anio=%s where id=%s',(varTitulo,varArtista,varAnyo,id))
+        mysql.connection.commit()
+    flash('Se actualozó el Album '+varTitulo)
+    return redirect(url_for('index'))
 
-@app.route('/eliminar', methods=['POST'])
-def eliminar():
-    return 'Se elimino en la BD'
+@app.route('/eliminar/<id>')
+def eliminar(id):
+    cursorId=mysql.connection.cursor()
+    cursorId.execute('select * from tbAlbums where id=%s',(id,))
+    consId = cursorId.fetchone()
+    return render_template('borraralbum.html', album= consId)
+
+@app.route('/delete/<id>',methods=['POST'])
+def actualizar(id):
+    if request.method == 'POST':
+        varTitulo = request.form['txtTitulo']
+        
+        curAct = mysql.connection.cursor()
+        curAct.execute('delete from tbAlbums where id=%s',(id))
+        mysql.connection.commit()
+    flash('Se borró el Album '+varTitulo)
+    return redirect(url_for('index'))
 
 #Ejecucion de nuestro programa
 if __name__ == '__main__':
