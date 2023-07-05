@@ -69,10 +69,10 @@ def eliminar(id):
     return render_template('borraralbum.html', album= consId)
 
 @app.route('/delete/<id>',methods=['POST'])
-def actualizar(id):
+def delete(id):
     if request.method == 'POST':
         varTitulo = request.form['txtTitulo']
-        
+
         curAct = mysql.connection.cursor()
         curAct.execute('delete from tbAlbums where id=%s',(id))
         mysql.connection.commit()

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Borrar Album</title>
+</head>
+<body>
+    
+    <h1>Album a borrar</h1>
+    <br>
+    <h1>¿Está seguro que quiere borrar este dato?</h1>
+    <br>
+    <form action="/delete/{{album.0}}" method="POST">
+        <input readonly name="txtTitulo" value="{{album.1}}">
+        <input readonly name="txtArtista" value="{{album.2}}">
+        <input readonly name="txtAnio" value="{{album.3}}">
+
+        
+        <button type="submit">Borrar</button>
+    </form>
+    <form action="/"><button type="submit" >Regresar</button></form>
+    
+</body>
+</html>
