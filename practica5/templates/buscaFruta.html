@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta por nombre</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/style2.css')}}">
+</head>
+<body>
+    <h1>Consulta por Nombre de fruta</h1>
+    <br>
+    <form action="/">
+    <button > Regresar </button> 
+    </form>
+    <br>
+    <br>
+
+    <form action="Consultanombre" method="POST">
+        <input type="text" name="txtbuscar" placeholder="Buscar fruta..." required>
+        <button type="submit">Buscar</button>
+      </form>
+<br>
+<br>
+  <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Fruta</th>
+          <th>Temporada</th>
+          <th>Precio</th>
+          <th>Stock</th>
+        </tr>
+      </thead>
+      <tbody>
+          {% for fru in listafruta%}
+              <tr>
+                  <td>{{fru.0}}</td>
+                  <td>{{fru.1}}</td>
+                  <td>{{fru.2}}</td>
+                  <td>{{fru.3}}</td>
+                  <td>{{fru.4}}</td>
+              </tr>
+          {%endfor%}
+      </tbody>
+    </table>
+</body>
+</html>

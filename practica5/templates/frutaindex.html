@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD Frutas</title>
+</head>
+<body>
+    <br>
+    <br>
+    <h1>Gestion de Frutas</h1>
+    <br>
+
+    {% with mensajes= get_flashed_messages() %}
+        {%if mensajes %}
+            {% for msj in mensajes %}
+                <h3> {{msj}} </h3>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <br>
+    
+    <form action="/guardarFrutas" method="POST">
+        <input type="text" name="txtNombre" placeholder="Escribe nombre" required>
+        <input type="text" name="txtTemporada" placeholder="Escribe temporada" required>
+        <input type="number" name="txtPrecio" placeholder="Escribe precio" required>
+        <input type="number" name="txtStock" placeholder="Escribe stock" required>
+
+        <button type="submit">Guardar</button>
+
+    </form>
+    <br>
+    <br>
+    <form action="/eliminar_editar"><button type="submit">Consultar Y eliminar</button></form>
+    <br>
+    <form action="/Consult"><button type="submit">Consultar por Fruta</button></form>
+
+</body>
+</html>
