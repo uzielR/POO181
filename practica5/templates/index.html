@@ -8,15 +8,23 @@
     <div class="mt-5 mb-5"><h1 class="display-1 text-center">Gestion de Albums</h1></div>
 
     
+    
+
+    <div class="container">
     {% with mensajes= get_flashed_messages() %}
         {%if mensajes %}
             {% for msj in mensajes %}
-                <h3> {{msj}} </h3>
+
+            <div class="alert alert-primary alert-dismissible fade show text-center" role="alert">
+                <strong>{{msj}}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            
+              <script>Swal.fire('Veamos!', 'Prueba Nueva','success')</script>
+              
             {% endfor %}
         {% endif %}
     {% endwith %}
-
-    <div class="container">
     <div class="row">
         <div class="col-md-5">
             <div class="card card-body mb-5">
@@ -31,7 +39,7 @@
                     <div class="mb-3">
                         <input class="form-control" type="number" name="txtAnio" placeholder="Escribe Año" required>                        
                     </div>
-                    <div class="d-grid gap-2"><button type="submit" class="btn btn-primary">Guardar</button></div>
+                    <div class="d-grid gap-2"><button type="submit" class="btn btn-outline-primary">Guardar</button></div>
             
                 </form>
             </div>
@@ -60,8 +68,8 @@
                 <td>{{alb.2}} </td>
                 <td>{{alb.3}} </td>
                 <td>
-                    <a href=/editar/{{alb.0}} class="btn btn-warning"><i class="bi bi-pencil-fill"></i></a>
-                    <a href=/eliminar/{{alb.0}} class="btn btn-danger"><i class="bi bi-trash"></i></a>
+                    <a href=/editar/{{alb.0}} class="btn btn-outline-warning"><i class="bi bi-pencil-fill"></i></a>
+                    <a href=/eliminar/{{alb.0}} class="btn btn-outline-danger"><i class="bi bi-trash"></i></a>
                 </td>
                 </tr>
                  {%endfor%}
