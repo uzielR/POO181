@@ -1,0 +1,66 @@
+{% extends 'platillaAdmin.html' %}
+
+{% block body%}
+
+<div class="mt-4 mb-6"><h1 class="display-1 text-center">Expedientes</h1></div>
+
+    <div class="container text-center mt-5">
+
+
+        
+        <div class="row">
+            <!-- <div class="col-md-1"></div> -->
+            <div>
+                <h1 class="text-center">Exploraciones</h1>
+                <table class="table">
+                <thead>
+                    <tr class="table-success">
+                        <th scope="col">Id exploracion</th>
+                        <th scope="col">Paciente</th>
+                        <th scope="col">Fecha Exploración</th>
+                        <th scope="col">Peso</th>
+                        <th scope="col">Altura</th>
+                        <th scope="col">Temperatura</th>
+                        <th scope="col">Latidos</th>
+                        <th scope="col">Saturacion Oxígeno</th>
+                        <th scope="col">Sintomas</th>
+                        <th scope="col">Diagnostico</th>
+                        <th scope="col">Tratamiento</th>
+                        <th scope="col"></th>
+
+                        
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    {% for ruta in lsConsulta %}
+                    <tr>
+                        <td>{{ruta.0}}</td>
+                        <td>{{ruta.1}}</td>
+                        <td>{{ruta.2}}</td>
+                        <td>{{ruta.3}}</td>
+                        <td>{{ruta.4}}</td>
+                        <td>{{ruta.5}}</td>
+                        <td>{{ruta.6}}</td>
+                        <td>{{ruta.7}}</td>
+                        <td>{{ruta.8}}</td>
+                        <td>{{ruta.9}}</td>
+                        <td>{{ruta.10}}</td>
+                        
+                        <td>
+                            <a  href="#" class="btn btn-secondary"><i class="bi bi-pencil-fill"></i></a>
+                            
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                </table>    
+    
+            </div>
+            
+    
+    
+        </div>
+    </div>
+    
+
+{% endblock %}

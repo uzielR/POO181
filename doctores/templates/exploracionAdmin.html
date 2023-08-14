@@ -1,0 +1,65 @@
+{% extends 'platillaAdmin.html' %}
+
+{% block body%}
+
+<div class="mt-5 mb-5"><h1 class="display-1 text-center">Exploración y Diagnóstico</h1></div>
+
+    
+    
+
+<div class="container">
+
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <div class="card card-body mb-5">
+            
+            <form action="/guardarExploracion" method="POST">
+                <div class="mb-3">
+                    <label class="label">Paciente</label>
+                    <select class="form-select" name="paciente" id="">
+                            <option selected>Seleccione un paciente</option>
+                        {% for rut in lsRegistro %}
+                            <option value="{{rut.0}}">{{rut.1}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="label">Exploración</label>
+                    <input class="form-control" type="date" name="txtFecha" placeholder="Fecha" required>                        
+                </div>
+                <div class="mb-3">
+                    <input type="text" class="form-control" name="txtPeso" placeholder="Peso (kg)" required>
+                </div>
+                <div class="mb-3">
+                    <input type="text" class="form-control" name="txtAltura" placeholder="Altura (m)" required>
+                </div>
+                <div class="mb-3">
+                    <input type="text" class="form-control" name="txtTemp" placeholder="Temperatura (°C)" required>
+                </div>
+                <div class="mb-3">
+                    <input class="form-control" type="text" name="txtLatidos" placeholder="Latidos por Minuto" required>                        
+                </div>
+                <div class="mb-3">
+                    <input class="form-control" type="text" name="txtSaturacion" placeholder="Saturacion oxígeno glucosa" required>                        
+                </div>
+                <div class="mb-3">
+                    <input class="form-control" type="text" name="txtSintomas" placeholder="Síntomas" required>                        
+                </div>
+                <div class="mb-3">
+                    <input type="text" class="form-control" name="txtDiagnostico" placeholder="Diagnóstico" required>
+                </div>
+                <div class="mb-3">
+                    <input type="text" class="form-control" name="txtTratamiento" placeholder="Tratamiento" required>
+                </div>
+                
+                <div class="d-grid gap-2"><button type="submit" class="btn btn-outline-primary">Guardar</button></div>
+        
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+    
+
+{% endblock %}
