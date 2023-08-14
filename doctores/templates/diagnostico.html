@@ -1,0 +1,54 @@
+{% extends 'plantilla.html' %}
+
+{% block body%}
+
+<div class="mt-5 mb-5"><h1 class="display-1 text-center">Diagnóstico</h1></div>
+
+    
+    
+
+<div class="container">
+{% with mensajes= get_flashed_messages() %}
+    {%if mensajes %}
+        {% for msj in mensajes %}
+
+        <div class="alert alert-primary alert-dismissible fade show text-center" role="alert">
+            <strong>{{msj}}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        
+          <script>Swal.fire('Veamos!', 'Prueba Nueva','success')</script>
+          
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <div class="card card-body mb-5">
+            <h1 class="text-center">Gestión Diagnósticos</h1>
+            <form action="#" method="POST">
+                <div class="mb-3">
+                    <input type="text" class="form-control" name="txtPacienteD" placeholder="Paciente" required>
+                </div>
+                <div class="mb-3">
+                    <input class="form-control" type="date" name="txtSintomas" placeholder="Síntomas" required>                        
+                </div>
+                <div class="mb-3">
+                    <input type="text" class="form-control" name="txtDiagnostico" placeholder="Diagnóstico" required>
+                </div>
+                <div class="mb-3">
+                    <input type="text" class="form-control" name="txtTratamiento" placeholder="Tratamiento" required>
+                </div>
+                
+                
+                <div class="d-grid gap-2"><button type="submit" class="btn btn-outline-primary">Guardar</button></div>
+        
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+    
+
+{% endblock %}

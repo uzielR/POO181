@@ -1,0 +1,64 @@
+{% extends 'plantilla.html' %}
+
+{% block body%}
+
+<div class="mt-5 mb-5"><h1 class="display-1 text-center">Edición de Pacientes</h1></div>
+
+    
+    
+
+<div class="container">
+
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <div class="card card-body mb-5">
+            <h1 class="text-center">Editar Paciente</h1>
+            <form action="/actualizar/{{rut.0}}" method="POST">
+                
+                <div class="mb-3">
+                    <label class="label">Médico</label>
+                    <input type="text" class="form-control" name="Medico" placeholder="Medico" value="{{rut.1}}" required readonly>
+                </div>
+                <div class="mb-3">
+                    
+                    <label class="label">Paciente</label>
+                </div>
+                <div class="mb-3">
+                    <label class="label">Nombre</label>
+                    <input type="text" class="form-control" name="txtNombre" placeholder="Nombre" value="{{rut.2}}" required>
+                </div>
+                <div class="mb-3">
+                    <label class="label">Apellido Paterno</label>
+                    <input type="text" class="form-control" name="txtAP" placeholder="Apellido Paterno" value="{{rut.3}}" required>
+                </div>
+                <div class="mb-3">
+                    <label class="label">Apellido Materno</label>
+                    <input type="text" class="form-control" name="txtAM" placeholder="Apellido Materno" value="{{rut.4}}" required>
+                </div>
+                <div class="mb-3">
+                    <label class="label">Fecha Nacimiento</label>
+                    <input class="form-control" type="date" name="txtNacimiento" placeholder="Fecha de Nacimiento" value="{{rut.5}}" required>                        
+                </div>
+                <div class="mb-3">
+                    <label class="label">Enfermedades Crónicas</label>
+                    <input class="form-control" type="text" name="txtEnfermedades" placeholder="Enfermedades Crónicas" value="{{rut.6}}" required>                        
+                </div>
+                <div class="mb-3">
+                    <label class="label">Alergias</label>
+                    <input class="form-control" type="text" name="txtAlergias" placeholder="Alergias" value="{{rut.7}}" required>                        
+                </div>
+                <div class="mb-3">
+                    <label class="label">Antecedentes</label>
+                    <input class="form-control" type="text" name="txtAntecedentes" placeholder="Antecedentes" value="{{rut.8}}" required>                        
+                </div>
+                <div class="d-grid gap-2"><button type="submit" class="btn btn-outline-primary">Guardar</button></div>
+        
+            </form> 
+        </div>
+    </div>
+</div>
+</div>
+    
+
+{% endblock %}
