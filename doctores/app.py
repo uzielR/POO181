@@ -11,7 +11,9 @@ app.config['MYSQL_USER']='root'
 app.config['MYSQL_PASSWORD']=''
 app.config['MYSQL_DB']='dbConsultorio'
 app.secret_key='mysecretkey'
-mysql=MySQL(app) 
+mysql=MySQL(app)
+
+global_idMedico = None
 
 class User(UserMixin):
     def __init__(self, id, rfc, password):
@@ -62,17 +64,20 @@ def login():
         # cursor = connection.cursor()
 
         cursor = mysql.connection.cursor()
-        query = 'SELECT id, RFC, contraseña FROM Medicos WHERE RFC = %s and contraseña = %s'
+        query = 'SELECT id, RFC, contraseña, rol FROM Medicos WHERE RFC = %s and contraseña = %s'
         cursor.execute(query, (rfc, password))  # Agrega comas después de cada valor
         persona = cursor.fetchone()
-        print(persona)
 
         print("Metodo: rfc(), antes de validar rfc y pass")
         if persona:
             print("Metodo: login(), rfc y pass correctos")
             user = User(id=persona[0], rfc=persona[1], password=persona[2])
+            if (persona[3] == 1):
+                flash('CONECTADO')
+                login_user(user)
+                return redirect(url_for('inicioAdmin'))
+            
             flash('CONECTADO')
-            print('CONECTADO')
             login_user(user)
             return redirect(url_for('inicio'))
         else:
@@ -84,12 +89,29 @@ def login():
         return render_template('login.html')
 
 
-
 @app.route('/inicio')
 @login_required
 def inicio():
+    if current_user:
+        id_doctor = current_user.id
+    print(id_doctor)
     consulta= mysql.connect.cursor()
-    consulta.execute('select Pacientes.id,concat(Medicos.nombre," ",Medicos.ap," ",Medicos.am),concat(Pacientes.nombre," ",Pacientes.ap," ",Pacientes.apellidoM),fechaNac,Pacientes.enfermedades,Pacientes.alergias,Pacientes.antecedentes from Pacientes inner join Medicos on Medicos.id=Pacientes.medicoA')
+    consulta.execute('select Pacientes.id,concat(Medicos.nombre," ",Medicos.ap," ",Medicos.am),concat(Pacientes.nombre," ",Pacientes.ap," ",Pacientes.apellidoM),fechaNac,Pacientes.enfermedades,Pacientes.alergias,Pacientes.antecedentes from Pacientes inner join Medicos on Medicos.id=Pacientes.medicoA where Medicos.id='+str(id_doctor))
+    conAlbums= consulta.fetchall()
+    #print(conAlbums)
+    
+    return render_template('inicio.html',lsConsulta = conAlbums)
+
+
+
+@app.route('/inicioAdmin')
+@login_required
+def inicioAdmin():
+    if current_user:
+        id_doctor = current_user.id
+    print(id_doctor)
+    consulta= mysql.connect.cursor()
+    consulta.execute('select Pacientes.id,concat(Medicos.nombre," ",Medicos.ap," ",Medicos.am),concat(Pacientes.nombre," ",Pacientes.ap," ",Pacientes.apellidoM),fechaNac,Pacientes.enfermedades,Pacientes.alergias,Pacientes.antecedentes from Pacientes inner join Medicos on Medicos.id=Pacientes.medicoA where Medicos.id='+str(id_doctor))
     conAlbums= consulta.fetchall()
     #print(conAlbums)
     
@@ -144,9 +166,12 @@ def guardarExploracion():
         vTemp=request.form['txtTemp']
         vLatidos=request.form['txtLatidos']
         vSaturacion=request.form['txtSaturacion']
+        vSintomas=request.form['txtSintomas']
+        vDiagnostico=request.form['txtDiagnostico']
+        vTratamiento=request.form['txtTratamiento']
         
-        cs.execute('insert into Exploraciones(paciente,fecha,peso,altura,temperatura,latidos,saturacion) values(%s,%s,%s,%s,%s,%s,%s)',
-        (vPaciente,vFecha,vPeso,vAltura,vTemp,vLatidos,vSaturacion))
+        cs.execute('insert into Exploraciones(paciente,fecha,peso,altura,temperatura,latidos,saturacion,sintomas,diagnostico,tratamiento) values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)',
+        (vPaciente,vFecha,vPeso,vAltura,vTemp,vLatidos,vSaturacion,vSintomas,vDiagnostico,vTratamiento))
         mysql.connection.commit()
     
     flash('La exploración fue agregada correctamente')
@@ -198,7 +223,7 @@ def delete_record(record_id):
 @login_required
 def citasConsultas5(id):
     consulta= mysql.connect.cursor()
-    consulta.execute('select Exploraciones.id,concat(Pacientes.nombre," ",Pacientes.ap," ",Pacientes.apellidoM),Exploraciones.fecha,Exploraciones.peso,Exploraciones.altura,Exploraciones.temperatura,Exploraciones.latidos,Exploraciones.saturacion from Pacientes inner join Exploraciones on Exploraciones.paciente= Pacientes.id where Pacientes.id='+id)
+    consulta.execute('select Exploraciones.id,concat(Pacientes.nombre," ",Pacientes.ap," ",Pacientes.apellidoM),Exploraciones.fecha,Exploraciones.peso,Exploraciones.altura,Exploraciones.temperatura,Exploraciones.latidos,Exploraciones.saturacion,Exploraciones.sintomas,Exploraciones.diagnostico,Exploraciones.tratamiento from Pacientes inner join Exploraciones on Exploraciones.paciente= Pacientes.id where Pacientes.id='+id)
     conAlbums= consulta.fetchall()
     return render_template('expedientes.html',lsConsulta=conAlbums)
 

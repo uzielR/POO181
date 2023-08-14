@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{url_for('static',filename="style.css")}}">
+    <link rel="stylesheet" href="{{url_for('static',filename="estilos.css")}}">
     <title>Login</title>
 </head>
 <body>
@@ -12,6 +12,20 @@
         <div class="login-header">
             <header>Login</header>
         </div>
+        {% with mensajes= get_flashed_messages() %}
+        {%if mensajes %}
+            {% for msj in mensajes %}
+    
+            <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+                <strong>{{msj}}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            
+<!--               <script>Swal.fire('Success', 'Registro Completado','success')</script> -->
+              
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
         <form action="/login" method="POST">
         <div class="input-box">
             <input name="rfc" type="text" class="input-field" placeholder="RFC" autocomplete="off" required>
