@@ -17,12 +17,7 @@
             <form action="/guardarPacientes" method="POST">
                 <div class="mb-3">
                     <label class="label">Médico</label>
-                    <select class="form-select" name="Medico" id="">
-                            <option selected>Seleccione un médico</option>
-                        {% for rut in lsRegistro %}
-                            <option value="{{rut.0}}">{{rut.1}}</option>
-                        {% endfor %}
-                    </select>
+                    <input type="text" class="form-control" name="Medico" value="{{rut.0.1}}" required readonly>
                 </div>
                 <div class="mb-3">
                     <label class="label">Paciente</label>

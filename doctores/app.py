@@ -13,7 +13,6 @@ app.config['MYSQL_DB']='dbConsultorio'
 app.secret_key='mysecretkey'
 mysql=MySQL(app)
 
-global_idMedico = None
 
 class User(UserMixin):
     def __init__(self, id, rfc, password):
@@ -31,6 +30,7 @@ login_manager.login_view = 'login'
 @login_manager.user_loader
 def load_user(id):
     print("este es mi id: " + id)
+    
     # cursor = connection.cursor() este sql server
     # print INSERT INTO `login` (`id`, `rfc`, `password`) VALUES ('1', 'QWWQ123456', '123');
     #login del back
@@ -40,7 +40,10 @@ def load_user(id):
     if persona:
         print("Metodo: load_user(id), el usuario si coincide.")
         #return User(id='1', email='121038198@upq.edu.mx', password='123')
-        return User(id=persona[0], rfc=persona[1], password=persona[2])
+        print("Mi contra"+persona[2])
+        
+        return User(id=persona[0], rfc=persona[1],password = persona[2])
+    
     return None
 
 @app.route('/')
@@ -58,16 +61,17 @@ def login():
     if request.method == 'POST':
         rfc = request.form['rfc']
         password = request.form['contra']
-
-        print("Metodo: login(), rfc y pass que llegan desde front: RFC {} pass {}".format(rfc, password))
-
         # cursor = connection.cursor()
 
         cursor = mysql.connection.cursor()
         query = 'SELECT id, RFC, contraseña, rol FROM Medicos WHERE RFC = %s and contraseña = %s'
         cursor.execute(query, (rfc, password))  # Agrega comas después de cada valor
         persona = cursor.fetchone()
-
+        #if persona:
+        #    hash=persona[2]
+        #pbkdf2:sha256:600000$kVAYtTuk6XgXphWM$d1b14c6e7bbe533584e975eab1acc4e33835a89532f999a9be190d5971d8c273        
+        print("Metodo: login(), rfc y pass que llegan desde front: RFC {} pass {}".format(rfc, persona))
+        contra='pbkdf2:sha256:600000$FbKaL0f4Qx5E3Wl8$4011b37ceb6ebbd9881ac3faa82e88d5ed80ae85d8cdd176d4032dcc2319b256'
         print("Metodo: rfc(), antes de validar rfc y pass")
         if persona:
             print("Metodo: login(), rfc y pass correctos")
@@ -115,15 +119,17 @@ def inicioAdmin():
     conAlbums= consulta.fetchall()
     #print(conAlbums)
     
-    return render_template('inicio.html',lsConsulta = conAlbums)
+    return render_template('inicioAdmin.html',lsConsulta = conAlbums)
 
 @app.route('/registroPaciente')
 @login_required
 def registroPaciente():
+    if current_user:
+        id_doctor = current_user.id
     consulta= mysql.connect.cursor()
-    consulta.execute('select id,concat(Medicos.nombre," ",Medicos.ap," ",Medicos.am) from Medicos')
+    consulta.execute('select id,concat(Medicos.nombre," ",Medicos.ap," ",Medicos.am) from Medicos where id='+str(id_doctor))
     conAlbums= consulta.fetchall()
-    return render_template('registroPaciente.html', lsRegistro=conAlbums)
+    return render_template('registroPaciente.html', rut=conAlbums)
 
 @app.route('/guardarPacientes', methods=['GET','POST'])
 def guardarPacientes():
@@ -150,8 +156,10 @@ def guardarPacientes():
 @app.route('/exploracion')
 @login_required
 def exploracion():
+    if current_user:
+        id_doctor = current_user.id
     consulta= mysql.connect.cursor()
-    consulta.execute('select id,concat(Pacientes.nombre," ",Pacientes.ap," ",Pacientes.apellidoM) from Pacientes')
+    consulta.execute('select Pacientes.id,concat(Pacientes.nombre," ",Pacientes.ap," ",Pacientes.apellidoM) from Pacientes where medicoA ='+str(id_doctor))
     conAlbums= consulta.fetchall()
     return render_template('exploracion.html', lsRegistro=conAlbums)
 
